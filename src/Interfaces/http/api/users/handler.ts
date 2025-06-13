@@ -1,5 +1,7 @@
 import type { Container } from "instances-container";
 import { AddUserUseCase } from "../../../../Applications/use_case/AddUserUseCase";
+import { DomainErrorTranslator } from "../../../../Commons/exceptions/DomainErrorTranslator";
+import { ClientError } from "../../../../Commons/exceptions/ClientError";
 
 export class UsersHandler {
   private readonly _container;
@@ -12,7 +14,6 @@ export class UsersHandler {
   async postUserHandler(request, h) {
     const addUserUseCase = this._container.getInstance(AddUserUseCase.name);
     const addedUser = await addUserUseCase.execute(request.payload);
-
     const response = h.response({
       status: "success",
       data: {
@@ -20,7 +21,6 @@ export class UsersHandler {
       },
     });
     response.code(201);
-
     return response;
   }
 }
