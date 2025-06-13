@@ -1,7 +1,5 @@
 import type { Container } from "instances-container";
 import { AddUserUseCase } from "../../../../Applications/use_case/AddUserUseCase";
-import { DomainErrorTranslator } from "../../../../Commons/exceptions/DomainErrorTranslator";
-import { ClientError } from "../../../../Commons/exceptions/ClientError";
 
 export class UsersHandler {
   private readonly _container;
