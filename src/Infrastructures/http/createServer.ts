@@ -1,7 +1,7 @@
 import type { Container } from "instances-container";
-import Hapi from "@hapi/hapi";
+import Hapi, { Request, ResponseToolkit } from "@hapi/hapi";
 import { config } from "../../Commons/config";
-import { usersPlugin } from "../../Interfaces/http/api/users";
+import { usersPlugin } from "../../Interfaces/http/api/users/index";
 import { DomainErrorTranslator } from "../../Commons/exceptions/DomainErrorTranslator";
 import { ClientError } from "../../Commons/exceptions/ClientError";
 
@@ -21,13 +21,13 @@ export const createServer = async (container: Container) => {
     },
   ]);
 
-  server.ext("onPreResponse", (request, h) => {
+  server.ext("onPreResponse", (request: Request, h: ResponseToolkit) => {
     // mendapatkan konteks response dari request
     const { response } = request;
 
     if (response instanceof Error) {
       // bila response tersebut error, tangani sesuai kebutuhan
-      const translatedError = DomainErrorTranslator.translate(response);
+      const translatedError: any = DomainErrorTranslator.translate(response);
 
       // penanganan client error secara internal.
       if (translatedError instanceof ClientError) {

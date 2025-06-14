@@ -6,7 +6,7 @@ export class UserRepositoryPostgres extends UserRepository {
   public _pool;
   public _idGenerator;
 
-  constructor(pool, idGenerator) {
+  constructor(pool: any, idGenerator: any) {
     super();
     this._pool = pool;
     this._idGenerator = idGenerator;

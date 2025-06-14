@@ -1,5 +1,6 @@
 import type { Container } from "instances-container";
 import { AddUserUseCase } from "../../../../Applications/use_case/AddUserUseCase";
+import { Request, ResponseToolkit } from "@hapi/hapi";
 
 export class UsersHandler {
   private readonly _container;
@@ -9,7 +10,7 @@ export class UsersHandler {
     this.postUserHandler = this.postUserHandler.bind(this);
   }
 
-  async postUserHandler(request, h) {
+  async postUserHandler(request: Request, h: ResponseToolkit) {
     const addUserUseCase = this._container.getInstance(AddUserUseCase.name);
     const addedUser = await addUserUseCase.execute(request.payload);
     const response = h.response({
