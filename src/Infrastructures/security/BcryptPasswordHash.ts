@@ -1,11 +1,10 @@
 import { PasswordHash } from "../../Applications/security/PasswordHash";
+import { AuthenticationError } from "../../Commons/exceptions/AuthenticationError";
 
 export class BcryptPasswordHash extends PasswordHash {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private readonly _bcrypt: any;
   private readonly _saltRound: number;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(bcrypt: any, saltRound: number = 10) {
     super();
     this._bcrypt = bcrypt;
@@ -13,6 +12,14 @@ export class BcryptPasswordHash extends PasswordHash {
   }
 
   async hash(password: string): Promise<string> {
-    return this._bcrypt.hash(password, this._saltRound);
+    return await this._bcrypt.hash(password, this._saltRound);
+  }
+
+  async comparePassword(password: string, hashedPassword: string): Promise<void> {
+    const result = await this._bcrypt.compare(password, hashedPassword);
+
+    if (!result) {
+      throw new AuthenticationError("kredensial yang Anda masukkan salah");
+    }
   }
 }

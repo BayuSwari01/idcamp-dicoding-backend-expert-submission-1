@@ -6,7 +6,6 @@ import { createServer } from "./Infrastructures/http/createServer";
 const start = async () => {
   const server = await createServer(container);
   await server.start();
-  console.log(`Server is running on ${server.info.uri}`);
 };
 
 start();

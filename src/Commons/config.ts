@@ -20,4 +20,9 @@ export const config = {
     port: process.env.PORT ? parseInt(process.env.PORT) : 5000,
     debug: process.env.DEBUG === "development" ? { request: ["error"] } : {},
   },
+  token: {
+    accessTokenKey: process.env.ACCESS_TOKEN_KEY || "defaultAccessTokenKey",
+    refreshTokenKey: process.env.REFRESH_TOKEN_KEY || "defaultRefreshTokenKey",
+    accessTokenExpiration: process.env.ACCCESS_TOKEN_AGE || "1h",
+  },
 };

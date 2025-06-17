@@ -4,6 +4,7 @@ import { config } from "../../Commons/config";
 import { usersPlugin } from "../../Interfaces/http/api/users/index";
 import { DomainErrorTranslator } from "../../Commons/exceptions/DomainErrorTranslator";
 import { ClientError } from "../../Commons/exceptions/ClientError";
+import { authenticationsPlugin } from "../../Interfaces/http/api/authentications";
 
 export const createServer = async (container: Container) => {
   const server = Hapi.server({
@@ -15,6 +16,12 @@ export const createServer = async (container: Container) => {
   await server.register([
     {
       plugin: usersPlugin,
+      options: {
+        container,
+      },
+    },
+    {
+      plugin: authenticationsPlugin,
       options: {
         container,
       },

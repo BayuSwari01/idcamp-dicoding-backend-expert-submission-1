@@ -14,4 +14,12 @@ export class UserRepository {
   async verifyAvailableUsername(username: string): Promise<void> {
     throw new Error("USER_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   }
+
+  async getPasswordByUsername(username: string): Promise<string> {
+    throw new Error("USER_REPOSITORY.METHOD_NOT_IMPLEMENTED");
+  }
+
+  async getIdByUsername(username: string): Promise<string> {
+    throw new Error("USER_REPOSITORY.METHOD_NOT_IMPLEMENTED");
+  }
 }

@@ -16,7 +16,7 @@ export const up = (pgm) => {
     },
     userId: {
       type: "VARCHAR(50)",
-      notNull: true,
+      notNull: false,
     },
   });
 };

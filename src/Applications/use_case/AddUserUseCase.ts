@@ -18,6 +18,6 @@ export class AddUserUseCase {
 
     registerUser.password = await this._passwordHash.hash(registerUser.password);
 
-    return this._userRepository.addUser(registerUser);
+    return await this._userRepository.addUser(registerUser);
   }
 }

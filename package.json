@@ -8,8 +8,8 @@
     "start": "node ./dist/src/app.js",
     "start:dev": "tsx watch src/app.ts",
     "start:devs": "nodemon --watch src --ext ts,json --exec ts-node src/app.ts",
-    "test": "jest --setupFiles dotenv/config ",
-    "test:watch": "jest --watchAll --coverage --setupFiles dotenv/config",
+    "test": "jest --runInBand --setupFiles dotenv/config ",
+    "test:watch": "jest --runInBand --watchAll --coverage --setupFiles dotenv/config",
     "migrate": "node-pg-migrate",
     "migrate:test": "node-pg-migrate --envPath .test.env"
   },

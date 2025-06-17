@@ -11,7 +11,7 @@ export class UsersHandler {
   }
 
   async postUserHandler(request: Request, h: ResponseToolkit) {
-    const addUserUseCase = this._container.getInstance(AddUserUseCase.name);
+    const addUserUseCase = await this._container.getInstance(AddUserUseCase.name);
     const addedUser = await addUserUseCase.execute(request.payload);
     const response = h.response({
       status: "success",
