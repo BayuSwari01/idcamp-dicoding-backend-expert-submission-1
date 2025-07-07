@@ -1,13 +1,18 @@
+export interface ThreadRepositoryPayload {
+  title: string;
+  body: string;
+}
+
 export class ThreadRepository {
-  async addThread(thread) {
+  async addThread(thread: ThreadRepositoryPayload) {
     throw new Error("THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   }
 
-  async getThreadById(threadId) {
+  async getThreadById(threadId: string) {
     throw new Error("THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   }
 
-  async verifyAvailableThread(threadId) {
+  async verifyAvailableThread(threadId: string) {
     throw new Error("THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   }
 
@@ -15,7 +20,7 @@ export class ThreadRepository {
     throw new Error("THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   }
 
-  async getDetailThread(threadId) {
+  async getDetailThread(threadId: string) {
     throw new Error("THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED");
   }
 }

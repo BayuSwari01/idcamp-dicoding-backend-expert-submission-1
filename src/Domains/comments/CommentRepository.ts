@@ -1,3 +1,7 @@
+export interface CommentRepositoryPayload {
+  content: string;
+}
+
 export class CommentRepository {
   async addComment(payload: any): Promise<void> {
     throw new Error("COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED");
