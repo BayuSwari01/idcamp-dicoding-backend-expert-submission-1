@@ -19,7 +19,7 @@ export class DetailThreadUseCase {
       id: thread.id,
       title: thread.title,
       body: thread.body,
-      date: thread.date,
+      date: new Date(thread.date),
       username: thread.username,
       comments: comments.map((comment) => ({
         id: comment.id,

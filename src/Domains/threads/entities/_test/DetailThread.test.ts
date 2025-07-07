@@ -18,7 +18,7 @@ describe("DetailThread entities", () => {
       id: "thread-123",
       title: "Thread Title",
       body: "Thread Body",
-      date: "2023-10-01T00:00:00.000Z",
+      date: new Date(),
       username: "user-123",
       comments: "not-an-array",
     };
@@ -31,7 +31,7 @@ describe("DetailThread entities", () => {
       id: "thread-123",
       title: "Thread Title",
       body: "Thread Body",
-      date: "2023-10-01T00:00:00.000Z",
+      date: new Date(),
       username: "user-123",
       comments: [],
     };
