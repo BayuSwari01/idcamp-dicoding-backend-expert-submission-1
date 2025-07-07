@@ -1,7 +1,13 @@
 export interface CommentRepositoryPayload {
+  threadId: string;
   content: string;
 }
 
+export interface DeleteCommentRepositoryPayload {
+  threadId: string;
+  id: string;
+  owner: string;
+}
 export class CommentRepository {
   async addComment(payload: any): Promise<void> {
     throw new Error("COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED");

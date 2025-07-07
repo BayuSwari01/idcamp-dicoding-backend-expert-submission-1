@@ -8,6 +8,6 @@ export class AddThreadUseCase {
   }
 
   async execute(useCasePayload: ThreadRepositoryPayload): Promise<void> {
-    await this._threadRepository.addThread(useCasePayload);
+    return await this._threadRepository.addThread(useCasePayload);
   }
 }
