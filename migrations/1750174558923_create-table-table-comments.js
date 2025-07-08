@@ -22,11 +22,11 @@ export const up = (pgm) => {
       type: "VARCHAR(50)",
       notNull: true,
     },
-    thread: {
+    threadId: {
       type: "VARCHAR(50)",
       notNull: true,
     },
-    is_delete: {
+    is_deleted: {
       type: "BOOLEAN",
       notNull: true,
       default: false,
@@ -37,7 +37,7 @@ export const up = (pgm) => {
     },
   });
   pgm.addConstraint("comments", "fk_comments.owner_users.id", "FOREIGN KEY(owner) REFERENCES users(id) ON DELETE CASCADE");
-  pgm.addConstraint("comments", "fk_comments.thread_threads.id", "FOREIGN KEY(thread) REFERENCES threads(id) ON DELETE CASCADE");
+  pgm.addConstraint("comments", "fk_comments.thread_threads.id", 'FOREIGN KEY("threadId") REFERENCES threads(id) ON DELETE CASCADE');
 };
 
 /**
