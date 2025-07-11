@@ -22,7 +22,7 @@ export class CreateComment {
       throw new Error("CREATE_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY");
     }
 
-    if (typeof typeof payload.content !== "string" || typeof payload.owner !== "string" || typeof payload.threadId !== "string") {
+    if (typeof payload.content !== "string" || typeof payload.owner !== "string" || typeof payload.threadId !== "string") {
       throw new Error("CREATE_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION");
     }
   }

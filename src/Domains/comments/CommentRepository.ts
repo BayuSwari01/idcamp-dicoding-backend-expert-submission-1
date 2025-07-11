@@ -1,6 +1,7 @@
 export interface CommentRepositoryPayload {
   threadId: string;
   content: string;
+  owner: string;
 }
 
 export interface DeleteCommentRepositoryPayload {

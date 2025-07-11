@@ -1,8 +1,8 @@
 /* istanbul ignore file */
 import { pool } from "../src/Infrastructures/database/postgres/pool";
 
-export const AuthenticationsTableTestHelper = {
-  async addThread({ id = "thread-123", title = "A Thread Test", body = "A Body Test", owner = "user-123", date = "A Date Test" }) {
+export const ThreadsTableTestHelper = {
+  async addThread({ id = "thread-123", title = "A Thread Test", body = "A Body Test", owner = "user-123", date = new Date() }) {
     const query = {
       text: "INSERT INTO threads VALUES($1, $2, $3, $4, $5)",
       values: [id, title, body, owner, date],

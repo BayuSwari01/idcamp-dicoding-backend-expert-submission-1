@@ -13,15 +13,15 @@ export class DetailThreadUseCase {
 
   async execute(threadId: string) {
     await this._threadRepository.verifyAvailableThread(threadId);
-    const thread = (await this._threadRepository.getThreadById(threadId)) as any;
-    const comments = await this._commentRepository.getCommentsThread(threadId);
+    const thread = (await this._threadRepository.getDetailThread(threadId)) as any;
+    // const comments = await this._commentRepository.getCommentsThread(threadId);
     return new DetailThread({
       id: thread.id,
       title: thread.title,
       body: thread.body,
       date: new Date(thread.date),
       username: thread.username,
-      comments: comments.map((comment) => ({
+      comments: thread.comments.map((comment: any) => ({
         id: comment.id,
         content: comment.content,
         date: comment.date,

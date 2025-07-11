@@ -1,6 +1,7 @@
 export interface ThreadRepositoryPayload {
   title: string;
   body: string;
+  owner: string;
 }
 
 export class ThreadRepository {
