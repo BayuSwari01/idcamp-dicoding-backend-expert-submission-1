@@ -14,13 +14,22 @@ describe("DetailThreadUseCase", () => {
 
     /** mocking needed function */
     mockThreadRepository.verifyAvailableThread = jest.fn().mockImplementation(() => Promise.resolve());
-    mockThreadRepository.getThreadById = jest.fn().mockImplementation(() =>
+    mockThreadRepository.getDetailThread = jest.fn().mockImplementation(() =>
       Promise.resolve({
         id: "thread-123",
         title: "Thread Title",
         body: "Thread Body",
         date: new Date("2023-10-01T00:00:00.000Z"),
         username: "user-123",
+        comments: [
+          {
+            id: "comment-123",
+            content: "Comment Content",
+            date: new Date("2023-10-01T01:00:00.000Z"),
+            username: "user-456",
+            isDeleted: false,
+          },
+        ],
       })
     );
     mockCommentRepository.getCommentsThread = jest.fn().mockImplementation(() =>

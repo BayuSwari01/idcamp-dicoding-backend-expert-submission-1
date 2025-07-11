@@ -81,7 +81,7 @@ describe("CommentRepositoryPostgres", () => {
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
       // Action & Assert
-      await expect(commentRepositoryPostgres.verifyCommentOwner("comment-123", "user-123")).rejects.toThrowError("COMMENT_NOT_FOUND");
+      await expect(commentRepositoryPostgres.verifyCommentOwner("comment-123", "user-123")).rejects.toThrowError("COMMENT_NOT_AUTHORIZED");
     });
 
     it("should not throw NotFoundError when comment owner matches", async () => {
