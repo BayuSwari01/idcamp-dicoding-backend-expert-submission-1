@@ -17,24 +17,31 @@ describe("ThreadRepositoryPostgres", () => {
 
   describe("addThread function", () => {
     it("should persist thread and return detail thread correctly", async () => {
+      await UsersTableTestHelper.addUser({ id: "user-123" });
       // Arrange
-      const thread = {
-        id: "thread-123",
+      const newThread = {
         title: "A Thread Test",
         body: "A Body Test",
         owner: "user-123",
-        date: new Date(),
       };
-      const fakeIdGenerator = () => thread.id; // stub!
+      const fakeIdGenerator = () => "thread-123"; // stub!
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action
-      await UsersTableTestHelper.addUser({});
-      await threadRepositoryPostgres.addThread(thread);
+      const createdThread = await threadRepositoryPostgres.addThread(newThread);
 
       // Assert
-      const threads = await ThreadsTableTestHelper.findThreadsById(thread.id);
+      const threads = await ThreadsTableTestHelper.findThreadsById("thread-123");
       expect(threads).toHaveLength(1);
+      expect(threads[0].id).toEqual("thread-123");
+      expect(threads[0].title).toEqual(newThread.title);
+      expect(threads[0].body).toEqual(newThread.body);
+      expect(threads[0].owner).toEqual(newThread.owner);
+      expect(createdThread).toEqual({
+        id: "thread-123",
+        title: newThread.title,
+        owner: newThread.owner,
+      });
     });
   });
 

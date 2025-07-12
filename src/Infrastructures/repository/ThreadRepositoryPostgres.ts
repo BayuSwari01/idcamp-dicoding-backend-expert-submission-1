@@ -40,6 +40,24 @@ export class ThreadRepositoryPostgres {
     }
   }
 
+  async getThreadById(threadId: string): Promise<{ id: string; title: string; body: string; date: Date; username: string }> {
+    const query = {
+      text: `SELECT t.id, t.title, t.body, t.date, u.username
+           FROM threads t
+           JOIN users u ON t.owner = u.id
+           WHERE t.id = $1`,
+      values: [threadId],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (result.rowCount === 0) {
+      throw new NotFoundError("THREAD_NOT_FOUND");
+    }
+
+    return result.rows[0];
+  }
+  //TODO: hapus ini
   async getDetailThread(threadId: string): Promise<DetailThread> {
     const query = {
       text: `

@@ -45,4 +45,24 @@ describe("DetailThread entities", () => {
     expect(detailThread.username).toEqual(payload.username);
     expect(detailThread.comments).toEqual(payload.comments);
   });
+
+  it("should throw error when comment does not meet data type specification", () => {
+    const payload = {
+      id: "thread-123",
+      title: "Thread Title",
+      body: "Thread Body",
+      date: new Date(),
+      username: "user-123",
+      comments: [
+        {
+          id: "comment-123",
+          username: "user-456",
+          date: new Date(),
+          content: 12345, // Invalid content type
+        },
+      ],
+    };
+
+    expect(() => new DetailThread(payload)).toThrowError("DETAIL_THREAD.COMMENT_NOT_MEET_DATA_TYPE_SPECIFICATION");
+  });
 });

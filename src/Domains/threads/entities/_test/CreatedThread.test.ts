@@ -1,36 +1,36 @@
-import { CreateThread } from "../CreateThread";
+import { CreatedThread } from "../CreatedThread";
 
-describe("CreateThread entities", () => {
+describe("CreatedThread entities", () => {
   it("should throw error when payload not contain needed property", () => {
     const payload = {
       title: "Thread Title",
-      body: "Thread Body",
+      owner: "user-123",
     };
 
-    expect(() => new CreateThread(payload)).toThrowError("CREATE_THREAD.NOT_CONTAIN_NEEDED_PROPERTY");
+    expect(() => new CreatedThread(payload)).toThrowError("CREATED_THREAD.NOT_CONTAIN_NEEDED_PROPERTY");
   });
 
   it("should throw error when payload not meet data type specification", () => {
     const payload = {
+      id: "thread-123",
       title: "Thread Title",
-      body: "Thread Body",
       owner: 12345,
     };
 
-    expect(() => new CreateThread(payload)).toThrowError("CREATE_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION");
+    expect(() => new CreatedThread(payload)).toThrowError("CREATED_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION");
   });
 
-  it("should create CreateThread entities correctly", () => {
+  it("should create CreatedThread entities correctly", () => {
     const payload = {
+      id: "thread-123",
       title: "Thread Title",
-      body: "Thread Body",
       owner: "user-123",
     };
 
-    const createThread = new CreateThread(payload);
+    const createThread = new CreatedThread(payload);
 
     expect(createThread.title).toEqual(payload.title);
-    expect(createThread.body).toEqual(payload.body);
+    expect(createThread.id).toEqual(payload.id);
     expect(createThread.owner).toEqual(payload.owner);
   });
 });

@@ -3,6 +3,8 @@ export interface CreatedCommentPayload {
   content: string;
   owner: string;
   threadId: string;
+  date?: Date;
+  isDeleted?: boolean;
 }
 
 export class CreatedComment {
@@ -10,6 +12,8 @@ export class CreatedComment {
   public content: string;
   public owner: string;
   public threadId: string;
+  public date: Date;
+  public isDeleted: boolean = false;
 
   constructor(payload: CreatedCommentPayload) {
     this._verifyPayload(payload);
@@ -18,6 +22,8 @@ export class CreatedComment {
     this.content = payload.content;
     this.owner = payload.owner;
     this.threadId = payload.threadId;
+    this.date = payload.date ? new Date(payload.date) : new Date();
+    this.isDeleted = payload.isDeleted || false;
   }
 
   _verifyPayload(payload: CreatedCommentPayload): void {

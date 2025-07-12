@@ -70,8 +70,10 @@ export class CommentRepositoryPostgres {
         SELECT 
           comments.id, 
           comments.content,
-          comments.owner,
-          comments."threadId"
+          users.username,
+          comments."threadId",
+          comments.date,
+          comments.is_deleted AS "isDeleted"
         FROM comments
         JOIN users ON users.id = comments.owner
         WHERE comments."threadId" = $1
@@ -79,15 +81,17 @@ export class CommentRepositoryPostgres {
       `,
       values: [threadId],
     };
-
     const result = await this._pool.query(query);
+
     return result.rows.map(
       (row) =>
         new CreatedComment({
           id: row.id,
           content: row.content,
-          owner: row.owner,
+          owner: row.username,
           threadId: row.threadId,
+          date: row.date ? new Date(row.date) : new Date(),
+          isDeleted: row.isDeleted || false,
         })
     );
   }
