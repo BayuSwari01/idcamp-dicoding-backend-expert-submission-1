@@ -5,9 +5,9 @@ import { config } from "../../Commons/config";
 import { usersPlugin } from "../../Interfaces/http/api/users/index";
 import { DomainErrorTranslator } from "../../Commons/exceptions/DomainErrorTranslator";
 import { ClientError } from "../../Commons/exceptions/ClientError";
-import { authenticationsPlugin } from "../../Interfaces/http/api/authentications";
-import { threadsPlugin } from "../../Interfaces/http/api/threads";
-import { commentsPlugin } from "../../Interfaces/http/api/comments";
+import { authenticationsPlugin } from "../../Interfaces/http/api/authentications/index";
+import { threadsPlugin } from "../../Interfaces/http/api/threads/index";
+import { commentsPlugin } from "../../Interfaces/http/api/comments/index";
 
 export const createServer = async (container: Container) => {
   const server = Hapi.server({
