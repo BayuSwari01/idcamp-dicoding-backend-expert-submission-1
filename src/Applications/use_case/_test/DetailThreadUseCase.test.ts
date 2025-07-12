@@ -8,41 +8,29 @@ describe("DetailThreadUseCase", () => {
     // Arrange
     const useCasePayload = "thread-123";
 
+    const mockDetailThread = new DetailThread({
+      id: "thread-123",
+      title: "Thread Title",
+      body: "Thread Body",
+      date: new Date("2023-10-01T00:00:00.000Z"),
+      username: "user-123",
+      comments: [
+        {
+          id: "comment-123",
+          content: "Comment Content",
+          date: new Date("2023-10-01T01:00:00.000Z"),
+          username: "user-456",
+        },
+      ],
+    });
+
     /** creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
 
     /** mocking needed function */
     mockThreadRepository.verifyAvailableThread = jest.fn().mockImplementation(() => Promise.resolve());
-    mockThreadRepository.getDetailThread = jest.fn().mockImplementation(() =>
-      Promise.resolve({
-        id: "thread-123",
-        title: "Thread Title",
-        body: "Thread Body",
-        date: new Date("2023-10-01T00:00:00.000Z"),
-        username: "user-123",
-        comments: [
-          {
-            id: "comment-123",
-            content: "Comment Content",
-            date: new Date("2023-10-01T01:00:00.000Z"),
-            username: "user-456",
-            isDeleted: false,
-          },
-        ],
-      })
-    );
-    mockCommentRepository.getCommentsThread = jest.fn().mockImplementation(() =>
-      Promise.resolve([
-        {
-          id: "comment-123",
-          content: "Comment Content",
-          date: new Date("2023-10-01T01:00:00.000Z"),
-          username: "user-456",
-          isDeleted: false,
-        },
-      ])
-    );
+    mockThreadRepository.getDetailThread = jest.fn().mockImplementation(() => Promise.resolve(mockDetailThread));
 
     /** creating use case instance */
     const detailThreadUseCase = new DetailThreadUseCase({
