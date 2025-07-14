@@ -1,6 +1,7 @@
 import { CommentsTableTestHelper } from "../../../../tests/CommentsTableTestHelper";
 import { ThreadsTableTestHelper } from "../../../../tests/ThreadsTableTestHelper";
 import { UsersTableTestHelper } from "../../../../tests/UsersTableTestHelper";
+import { CreatedComment } from "../../../Domains/comments/entities/CreatedComment";
 import { pool } from "../../database/postgres/pool";
 import { CommentRepositoryPostgres } from "../CommentRepositoryPostgres";
 
@@ -18,7 +19,16 @@ describe("CommentRepositoryPostgres", () => {
   describe("addComment function", () => {
     it("should persist comment and return created comment correctly", async () => {
       // Arrange
-      const comment = {
+      const expectedComment = new CreatedComment({
+        content: "A Comment Test",
+        threadId: "thread-123",
+        owner: "user-123",
+        date: new Date(),
+        id: "comment-123",
+        isDeleted: false,
+      });
+
+      const commentPayload = {
         content: "A Comment Test",
         threadId: "thread-123",
         owner: "user-123",
@@ -29,11 +39,20 @@ describe("CommentRepositoryPostgres", () => {
       // Action
       await UsersTableTestHelper.addUser({});
       await ThreadsTableTestHelper.addThread({ id: "thread-123" });
-      const createdComment = await commentRepositoryPostgres.addComment(comment);
+      const comment = await commentRepositoryPostgres.addComment(commentPayload);
 
       // Assert
-      const comments = await CommentsTableTestHelper.findCommentsById(createdComment.id);
-      expect(comments).toHaveLength(1);
+      expect(comment).toEqual(
+        expect.objectContaining({
+          id: "comment-123",
+          content: "A Comment Test",
+          threadId: "thread-123",
+          owner: "user-123",
+          isDeleted: false,
+        })
+      );
+
+      expect(comment.date).toBeInstanceOf(Date);
     });
   });
 

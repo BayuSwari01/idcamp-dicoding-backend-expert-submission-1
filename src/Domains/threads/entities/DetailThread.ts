@@ -3,6 +3,7 @@ export interface DetailThreadCommentPayload {
   username: string;
   date: Date;
   content: string;
+  isDeleted?: boolean;
 }
 
 export interface DetailThreadPayload {

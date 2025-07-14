@@ -23,6 +23,35 @@ describe("CreatedComment entities", () => {
   });
 
   it("should create CreatedComment entities correctly", () => {
+    const expectedComment = new CreatedComment({
+      id: "comment-123",
+      content: "Comment Content",
+      owner: "user-123",
+      threadId: "thread-123",
+      date: new Date("2025-01-01T10:00:00.000Z"),
+    });
+
+    const payloadComment = {
+      id: "comment-123",
+      content: "Comment Content",
+      owner: "user-123",
+      threadId: "thread-123",
+      date: new Date("2025-01-01T10:00:00.000Z"),
+    };
+
+    const comment = new CreatedComment(payloadComment);
+
+    expect(comment).toEqual(expectedComment);
+    expect(comment.id).toEqual(expectedComment.id);
+    expect(comment.content).toEqual(expectedComment.content);
+    expect(comment.owner).toEqual(expectedComment.owner);
+    expect(comment.threadId).toEqual(expectedComment.threadId);
+    expect(comment.date).toEqual(expectedComment.date); // deep check
+    expect(comment.isDeleted).toBe(expectedComment.isDeleted);
+  });
+
+  it("should set date to current time when date is not provided", () => {
+    // Arrange
     const payload = {
       id: "comment-123",
       content: "Comment Content",
@@ -30,11 +59,14 @@ describe("CreatedComment entities", () => {
       threadId: "thread-123",
     };
 
-    const createdComment = new CreatedComment(payload);
+    const before = new Date(); // waktu sebelum instansiasi
+    const comment = new CreatedComment(payload);
+    const after = new Date(); // waktu setelah instansiasi
 
-    expect(createdComment.id).toEqual(payload.id);
-    expect(createdComment.content).toEqual(payload.content);
-    expect(createdComment.owner).toEqual(payload.owner);
-    expect(createdComment.threadId).toEqual(payload.threadId);
+    // Assert
+    expect(comment.date).toBeInstanceOf(Date);
+    // Pastikan date yang dibuat berada di antara waktu sebelum dan sesudah
+    expect(comment.date.getTime()).toBeGreaterThanOrEqual(before.getTime());
+    expect(comment.date.getTime()).toBeLessThanOrEqual(after.getTime());
   });
 });

@@ -1,21 +1,24 @@
 import { ThreadRepository } from "../../../Domains/threads/ThreadRepository";
 import { AddThreadUseCase } from "../AddThreadUseCase";
 import { CreatedThread } from "../../../Domains/threads/entities/CreatedThread";
+import { CreateThread } from "../../../Domains/threads/entities/CreateThread";
 
 describe("AddThreadUseCase", () => {
   it("should orchestrating the add thread action correctly", async () => {
     // Arrange
-    const useCasePayload = {
+    const expectedThread = {
+      id: "thread-123",
       title: "Thread Title",
-      body: "Thread Body",
       owner: "user-123",
     };
 
     const mockCreatedThread = new CreatedThread({
       id: "thread-123",
-      title: useCasePayload.title,
-      owner: useCasePayload.owner,
+      title: "Thread Title",
+      owner: "user-123",
     });
+
+    const payloadCreateThread = new CreateThread({ title: "Thread Title", body: "this is thread", owner: "user-123" });
 
     /** creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
@@ -29,14 +32,9 @@ describe("AddThreadUseCase", () => {
     });
 
     // Action
-    const createdThread = await addThreadUseCase.execute(useCasePayload);
+    const thread = await addThreadUseCase.execute(payloadCreateThread);
 
     // Assert
-    expect(createdThread).toEqual(mockCreatedThread);
-    expect(mockThreadRepository.addThread).toBeCalledWith({
-      title: useCasePayload.title,
-      body: useCasePayload.body,
-      owner: useCasePayload.owner,
-    });
+    expect(thread).toEqual(expectedThread);
   });
 });

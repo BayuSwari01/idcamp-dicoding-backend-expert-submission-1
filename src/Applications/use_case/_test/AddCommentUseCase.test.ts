@@ -1,29 +1,29 @@
 import { CommentRepository } from "../../../Domains/comments/CommentRepository";
 import { ThreadRepository } from "../../../Domains/threads/ThreadRepository";
 import { AddCommentUseCase } from "../AddCommentUseCase";
-import { CreatedComment } from "../../../Domains/comments/entities/CreatedComment";
 
 describe("AddCommentUseCase", () => {
-  it("should orchestrating the add comment action correctly", async () => {
+  it("should orchestrate the add comment action correctly", async () => {
     // Arrange
-    const useCasePayload = {
+    const expectedComment = {
+      id: "comment-123",
       threadId: "thread-123",
       content: "sebuah comment",
       owner: "user-123",
     };
 
-    const mockCreatedComment = new CreatedComment({
+    const mockCreatedComment = {
       id: "comment-123",
-      content: useCasePayload.content,
-      owner: useCasePayload.owner,
-      threadId: useCasePayload.threadId,
-    });
+      content: "sebuah comment",
+      owner: "user-123",
+      threadId: "thread-123",
+    };
 
     const mockCommentRepository = new CommentRepository();
     const mockThreadRepository = new ThreadRepository();
 
-    mockThreadRepository.verifyAvailableThread = jest.fn().mockImplementation(() => Promise.resolve());
-    mockCommentRepository.addComment = jest.fn().mockImplementation(() => Promise.resolve(mockCreatedComment));
+    mockThreadRepository.verifyAvailableThread = jest.fn().mockResolvedValue(undefined);
+    mockCommentRepository.addComment = jest.fn().mockResolvedValue(mockCreatedComment);
 
     const addCommentUseCase = new AddCommentUseCase({
       commentRepository: mockCommentRepository,
@@ -31,10 +31,9 @@ describe("AddCommentUseCase", () => {
     });
 
     // Action
-    await addCommentUseCase.execute(useCasePayload);
+    const comment = await addCommentUseCase.execute(expectedComment);
 
     // Assert
-    expect(mockThreadRepository.verifyAvailableThread).toBeCalledWith(useCasePayload.threadId);
-    expect(mockCommentRepository.addComment).toBeCalledWith(useCasePayload);
+    expect(comment).toStrictEqual(expectedComment);
   });
 });

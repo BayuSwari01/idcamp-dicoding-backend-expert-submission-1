@@ -45,8 +45,8 @@ export class CommentRepositoryPostgres {
 
   async deleteComment(commentId: string): Promise<void> {
     const query = {
-      text: "UPDATE comments SET is_deleted = true, content = $2 WHERE id = $1",
-      values: [commentId, "**komentar telah dihapus**"],
+      text: "UPDATE comments SET is_deleted = true WHERE id = $1",
+      values: [commentId],
     };
 
     await this._pool.query(query);

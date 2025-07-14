@@ -29,11 +29,17 @@ export class ThreadsHandler {
     const { threadId } = request.params;
     const detailThreadUseCase = await this.container.getInstance(DetailThreadUseCase.name);
     const threadDetails = await detailThreadUseCase.execute(threadId);
-
+    const transformedThreadDetails = {
+      ...threadDetails,
+      comments: threadDetails.comments.map((comment: any) => ({
+        ...comment,
+        content: comment.isDeleted ? "**komentar telah dihapus**" : comment.content,
+      })),
+    };
     return {
       status: "success",
       data: {
-        thread: threadDetails,
+        thread: transformedThreadDetails,
       },
     };
   }
