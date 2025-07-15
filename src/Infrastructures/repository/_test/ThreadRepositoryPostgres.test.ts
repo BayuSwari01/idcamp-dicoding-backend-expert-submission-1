@@ -3,6 +3,8 @@ import { CommentsTableTestHelper } from "../../../../tests/CommentsTableTestHelp
 import { UsersTableTestHelper } from "../../../../tests/UsersTableTestHelper";
 import { pool } from "../../database/postgres/pool";
 import { ThreadRepositoryPostgres } from "../ThreadRepositoryPostgres";
+import { CommentRepositoryPostgres } from "../CommentRepositoryPostgres";
+import { DetailThread } from "../../../Domains/threads/entities/DetailThread";
 
 describe("ThreadRepositoryPostgres", () => {
   afterEach(async () => {
@@ -68,29 +70,46 @@ describe("ThreadRepositoryPostgres", () => {
   describe("getDetailThread function", () => {
     it("should return detail thread with comments when thread exists", async () => {
       // Arrange
-      const thread = {
+      const expectedThreadDetail = new DetailThread({
+        id: "thread-123",
+        title: "A Thread Test",
+        body: "A Body Test",
+        date: new Date("2023-10-01T00:00:00.000Z"),
+        username: "dicoding",
+        comments: [],
+      });
+      const threadPayload = {
         id: "thread-123",
         title: "A Thread Test",
         body: "A Body Test",
         owner: "user-123",
-        date: new Date(),
+        date: new Date("2023-10-01T00:00:00.000Z"),
       };
       await UsersTableTestHelper.addUser({});
-      await ThreadsTableTestHelper.addThread(thread);
+      await ThreadsTableTestHelper.addThread(threadPayload);
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
       // Action
-      const detailThread = await threadRepositoryPostgres.getDetailThread(thread.id);
-
-      // Assert
-      expect(detailThread).toEqual({
+      const thread = await threadRepositoryPostgres.getThreadById(threadPayload.id);
+      const comments = await commentRepositoryPostgres.getCommentsThread(threadPayload.id);
+      const detailThread = new DetailThread({
         id: thread.id,
         title: thread.title,
         body: thread.body,
-        date: thread.date,
-        username: "dicoding",
-        comments: [],
+        date: new Date(thread.date),
+        username: thread.username,
+        comments: comments.map((comment: any) => ({
+          id: comment.id,
+          content: comment.content,
+          date: comment.date,
+          username: comment.owner,
+          isDeleted: comment.isDeleted,
+        })),
       });
+
+      // Assert
+      expect(detailThread).toEqual(expectedThreadDetail);
     });
 
     it("should throw NotFoundError when thread does not exist", async () => {
@@ -98,7 +117,7 @@ describe("ThreadRepositoryPostgres", () => {
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
       // Action & Assert
-      await expect(threadRepositoryPostgres.getDetailThread("thread-123")).rejects.toThrowError("THREAD_NOT_FOUND");
+      await expect(threadRepositoryPostgres.getThreadById("thread-123")).rejects.toThrowError("THREAD_NOT_FOUND");
     });
   });
 
@@ -106,7 +125,24 @@ describe("ThreadRepositoryPostgres", () => {
     it("should return detail thread with comments when thread and comments exist", async () => {
       const fixDate = new Date();
       // Arrange
-      const thread = {
+      const expectedDetailThread = new DetailThread({
+        id: "thread-123",
+        title: "A Thread Test",
+        body: "A Body Test",
+        date: fixDate,
+        username: "dicoding",
+        comments: [
+          {
+            id: "comment-123",
+            content: "A Comment Test",
+            date: fixDate,
+            username: "dicoding",
+            isDeleted: false, // Assuming comments are not deleted in this test
+          },
+        ],
+      });
+
+      const threadPayload = {
         id: "thread-123",
         title: "A Thread Test",
         body: "A Body Test",
@@ -114,37 +150,38 @@ describe("ThreadRepositoryPostgres", () => {
         date: fixDate,
       };
       await UsersTableTestHelper.addUser({});
-      await ThreadsTableTestHelper.addThread(thread);
+      await ThreadsTableTestHelper.addThread(threadPayload);
       // Simulate adding comments to the thread
       await CommentsTableTestHelper.addComment({
         id: "comment-123",
-        threadId: thread.id,
+        threadId: threadPayload.id,
         content: "A Comment Test",
         owner: "user-123",
         date: fixDate,
       });
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
       // Action
-      const detailThread = await threadRepositoryPostgres.getDetailThread(thread.id);
-
-      // Assert
-      expect(detailThread).toEqual({
+      const thread = await threadRepositoryPostgres.getThreadById(threadPayload.id);
+      const comments = await commentRepositoryPostgres.getCommentsThread(threadPayload.id);
+      const detailThread = new DetailThread({
         id: thread.id,
         title: thread.title,
         body: thread.body,
-        date: thread.date,
-        username: "dicoding",
-        comments: [
-          {
-            id: "comment-123",
-            username: "dicoding",
-            date: fixDate,
-            content: "A Comment Test",
-            is_deleted: false, // Assuming comments are not deleted in this test
-          },
-        ],
+        date: new Date(thread.date),
+        username: thread.username,
+        comments: comments.map((comment: any) => ({
+          id: comment.id,
+          content: comment.content,
+          date: comment.date,
+          username: comment.owner,
+          isDeleted: comment.isDeleted,
+        })),
       });
+
+      // Assert
+      expect(detailThread).toEqual(expectedDetailThread);
     });
   });
 });

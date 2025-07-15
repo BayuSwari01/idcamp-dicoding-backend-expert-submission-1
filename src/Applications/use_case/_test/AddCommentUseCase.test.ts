@@ -1,23 +1,24 @@
 import { CommentRepository } from "../../../Domains/comments/CommentRepository";
 import { ThreadRepository } from "../../../Domains/threads/ThreadRepository";
 import { AddCommentUseCase } from "../AddCommentUseCase";
+import { CreatedComment } from "../../../Domains/comments/entities/CreatedComment";
 
 describe("AddCommentUseCase", () => {
   it("should orchestrate the add comment action correctly", async () => {
     // Arrange
-    const expectedComment = {
+    const expectedComment = new CreatedComment({
       id: "comment-123",
       threadId: "thread-123",
       content: "sebuah comment",
       owner: "user-123",
-    };
+    });
 
-    const mockCreatedComment = {
+    const mockCreatedComment = new CreatedComment({
       id: "comment-123",
       content: "sebuah comment",
       owner: "user-123",
       threadId: "thread-123",
-    };
+    });
 
     const mockCommentRepository = new CommentRepository();
     const mockThreadRepository = new ThreadRepository();

@@ -6,11 +6,11 @@ import { CreateThread } from "../../../Domains/threads/entities/CreateThread";
 describe("AddThreadUseCase", () => {
   it("should orchestrating the add thread action correctly", async () => {
     // Arrange
-    const expectedThread = {
+    const expectedThread = new CreatedThread({
       id: "thread-123",
       title: "Thread Title",
       owner: "user-123",
-    };
+    });
 
     const mockCreatedThread = new CreatedThread({
       id: "thread-123",
