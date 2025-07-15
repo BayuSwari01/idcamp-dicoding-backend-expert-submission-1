@@ -5,6 +5,7 @@ import { pool } from "../../database/postgres/pool";
 import { ThreadRepositoryPostgres } from "../ThreadRepositoryPostgres";
 import { CommentRepositoryPostgres } from "../CommentRepositoryPostgres";
 import { DetailThread } from "../../../Domains/threads/entities/DetailThread";
+import { CreatedComment } from "../../../Domains/comments/entities/CreatedComment";
 
 describe("ThreadRepositoryPostgres", () => {
   afterEach(async () => {
@@ -123,24 +124,26 @@ describe("ThreadRepositoryPostgres", () => {
 
   describe("getDetailThread with comments", () => {
     it("should return detail thread with comments when thread and comments exist", async () => {
-      const fixDate = new Date();
+      const fixDate = new Date("2025-07-15T16:17:55.537+07:00");
       // Arrange
-      const expectedDetailThread = new DetailThread({
+      const expectedThread = {
         id: "thread-123",
         title: "A Thread Test",
         body: "A Body Test",
-        date: fixDate,
+        date: "2025-07-15T16:17:55.537+07:00",
         username: "dicoding",
-        comments: [
-          {
-            id: "comment-123",
-            content: "A Comment Test",
-            date: fixDate,
-            username: "dicoding",
-            isDeleted: false, // Assuming comments are not deleted in this test
-          },
-        ],
+      };
+
+      const expectedComment = new CreatedComment({
+        id: "comment-123",
+        threadId: "thread-123",
+        content: "A Comment Test",
+        date: fixDate,
+        owner: "dicoding",
+        isDeleted: false, // Assuming comments are not deleted in this test
       });
+
+      const expectedComments = [expectedComment];
 
       const threadPayload = {
         id: "thread-123",
@@ -165,23 +168,10 @@ describe("ThreadRepositoryPostgres", () => {
       // Action
       const thread = await threadRepositoryPostgres.getThreadById(threadPayload.id);
       const comments = await commentRepositoryPostgres.getCommentsThread(threadPayload.id);
-      const detailThread = new DetailThread({
-        id: thread.id,
-        title: thread.title,
-        body: thread.body,
-        date: new Date(thread.date),
-        username: thread.username,
-        comments: comments.map((comment: any) => ({
-          id: comment.id,
-          content: comment.content,
-          date: comment.date,
-          username: comment.owner,
-          isDeleted: comment.isDeleted,
-        })),
-      });
 
       // Assert
-      expect(detailThread).toEqual(expectedDetailThread);
+      expect(thread).toEqual(expectedThread);
+      expect(comments).toEqual(expectedComments);
     });
   });
 });

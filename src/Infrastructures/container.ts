@@ -30,6 +30,7 @@ import { ThreadRepository } from "../Domains/threads/ThreadRepository";
 import { CommentRepository } from "../Domains/comments/CommentRepository";
 import { ThreadRepositoryPostgres } from "./repository/ThreadRepositoryPostgres";
 import { CommentRepositoryPostgres } from "./repository/CommentRepositoryPostgres";
+import { TransformDetailThreadUseCase } from "../Applications/use_case/TransformDetailThreadUseCase";
 
 // create a container instance
 const container = createContainer();
@@ -249,6 +250,13 @@ container.register([
           internal: ThreadRepository.name,
         },
       ],
+    },
+  },
+  {
+    key: TransformDetailThreadUseCase.name,
+    Class: TransformDetailThreadUseCase,
+    parameter: {
+      injectType: "destructuring",
     },
   },
 ]);

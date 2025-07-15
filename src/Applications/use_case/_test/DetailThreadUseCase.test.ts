@@ -1,4 +1,5 @@
 import { CommentRepository } from "../../../Domains/comments/CommentRepository";
+import { CreatedComment } from "../../../Domains/comments/entities/CreatedComment";
 import { DetailThread } from "../../../Domains/threads/entities/DetailThread";
 import { ThreadRepository } from "../../../Domains/threads/ThreadRepository";
 import { DetailThreadUseCase } from "../DetailThreadUseCase";
@@ -22,6 +23,7 @@ describe("DetailThreadUseCase", () => {
         },
       ],
     });
+
     const useCasePayload = "thread-123";
 
     const mockRawThread = {
@@ -33,28 +35,31 @@ describe("DetailThreadUseCase", () => {
     };
 
     const mockRawComments = [
-      {
+      new CreatedComment({
         id: "comment-123",
         content: "Comment Content",
         date: new Date("2023-10-01T00:00:00.000Z"),
+        threadId: "thread-123",
         owner: "user-456",
         isDeleted: false,
-      },
+      }),
     ];
 
+    // Create mock repositories
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
 
-    mockThreadRepository.verifyAvailableThread = jest.fn().mockImplementation(() => Promise.resolve());
-    mockThreadRepository.getThreadById = jest.fn().mockImplementation(() => Promise.resolve(mockRawThread));
-    mockCommentRepository.getCommentsThread = jest.fn().mockImplementation(() => Promise.resolve(mockRawComments));
+    // Mock method implementations
+    mockThreadRepository.verifyAvailableThread = jest.fn().mockResolvedValue({});
+    mockThreadRepository.getThreadById = jest.fn().mockResolvedValue(mockRawThread);
+    mockCommentRepository.getCommentsThread = jest.fn().mockResolvedValue(mockRawComments);
 
     const detailThreadUseCase = new DetailThreadUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
     });
 
-    // Action
+    // Act
     const detailThread = await detailThreadUseCase.execute(useCasePayload);
 
     // Assert
@@ -64,6 +69,7 @@ describe("DetailThreadUseCase", () => {
     expect(detailThread.body).toEqual(expectedDetailThread.body);
     expect(detailThread.date).toEqual(expectedDetailThread.date);
     expect(detailThread.username).toEqual(expectedDetailThread.username);
+
     expect(detailThread.comments).toHaveLength(1);
     expect(detailThread.comments[0].id).toEqual(expectedDetailThread.comments[0].id);
     expect(detailThread.comments[0].content).toEqual(expectedDetailThread.comments[0].content);
