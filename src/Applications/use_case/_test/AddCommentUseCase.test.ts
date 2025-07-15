@@ -6,6 +6,12 @@ import { CreatedComment } from "../../../Domains/comments/entities/CreatedCommen
 describe("AddCommentUseCase", () => {
   it("should orchestrate the add comment action correctly", async () => {
     // Arrange
+    const payload = {
+      threadId: "thread-123",
+      content: "sebuah comment",
+      owner: "user-123",
+    };
+
     const expectedComment = new CreatedComment({
       id: "comment-123",
       threadId: "thread-123",
@@ -36,5 +42,10 @@ describe("AddCommentUseCase", () => {
 
     // Assert
     expect(comment).toStrictEqual(expectedComment);
+    expect(mockThreadRepository.verifyAvailableThread).toHaveBeenCalledTimes(1);
+    expect(mockThreadRepository.verifyAvailableThread).toHaveBeenCalledWith(payload.threadId);
+
+    expect(mockCommentRepository.addComment).toHaveBeenCalledTimes(1);
+    expect(mockCommentRepository.addComment).toHaveBeenCalledWith(expectedComment);
   });
 });

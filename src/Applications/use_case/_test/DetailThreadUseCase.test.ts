@@ -21,6 +21,13 @@ describe("DetailThreadUseCase", () => {
           username: "user-456",
           isDeleted: false,
         },
+        {
+          id: "comment-456",
+          content: "**komentar telah dihapus**",
+          date: new Date("2023-10-01T01:00:00.000Z"),
+          username: "user-789",
+          isDeleted: true,
+        },
       ],
     });
 
@@ -42,6 +49,14 @@ describe("DetailThreadUseCase", () => {
         threadId: "thread-123",
         owner: "user-456",
         isDeleted: false,
+      }),
+      new CreatedComment({
+        id: "comment-456",
+        content: "**komentar telah dihapus**",
+        date: new Date("2023-10-01T01:00:00.000Z"),
+        threadId: "thread-123",
+        owner: "user-789",
+        isDeleted: true,
       }),
     ];
 
@@ -70,11 +85,17 @@ describe("DetailThreadUseCase", () => {
     expect(detailThread.date).toEqual(expectedDetailThread.date);
     expect(detailThread.username).toEqual(expectedDetailThread.username);
 
-    expect(detailThread.comments).toHaveLength(1);
+    expect(detailThread.comments).toHaveLength(2);
     expect(detailThread.comments[0].id).toEqual(expectedDetailThread.comments[0].id);
     expect(detailThread.comments[0].content).toEqual(expectedDetailThread.comments[0].content);
     expect(detailThread.comments[0].date).toEqual(expectedDetailThread.comments[0].date);
     expect(detailThread.comments[0].username).toEqual(expectedDetailThread.comments[0].username);
     expect(detailThread.comments[0].isDeleted).toEqual(expectedDetailThread.comments[0].isDeleted);
+
+    expect(detailThread.comments[1].id).toEqual(expectedDetailThread.comments[1].id);
+    expect(detailThread.comments[1].content).toEqual(expectedDetailThread.comments[1].content);
+    expect(detailThread.comments[1].date).toEqual(expectedDetailThread.comments[1].date);
+    expect(detailThread.comments[1].username).toEqual(expectedDetailThread.comments[1].username);
+    expect(detailThread.comments[1].isDeleted).toEqual(expectedDetailThread.comments[1].isDeleted);
   });
 });

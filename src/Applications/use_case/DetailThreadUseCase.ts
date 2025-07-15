@@ -25,7 +25,7 @@ export class DetailThreadUseCase {
       username: thread.username,
       comments: comments.map((comment: any) => ({
         id: comment.id,
-        content: comment.content,
+        content: comment.isDeleted ? "**komentar telah dihapus**" : comment.content,
         date: comment.date,
         username: comment.owner,
         isDeleted: comment.isDeleted,

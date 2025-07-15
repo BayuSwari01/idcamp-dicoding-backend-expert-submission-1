@@ -2,7 +2,6 @@ import { Request, ResponseToolkit } from "@hapi/hapi";
 import { Container } from "instances-container";
 import { AddThreadUseCase } from "../../../../Applications/use_case/AddThreadUseCase";
 import { DetailThreadUseCase } from "../../../../Applications/use_case/DetailThreadUseCase";
-import { TransformDetailThreadUseCase } from "../../../../Applications/use_case/TransformDetailThreadUseCase";
 
 export class ThreadsHandler {
   constructor(private container: Container) {
@@ -30,19 +29,11 @@ export class ThreadsHandler {
     const { threadId } = request.params;
     const detailThreadUseCase = await this.container.getInstance(DetailThreadUseCase.name);
     const threadDetails = await detailThreadUseCase.execute(threadId);
-    // const transformedThreadDetails = {
-    //   ...threadDetails,
-    //   comments: threadDetails.comments.map((comment: any) => ({
-    //     ...comment,
-    //     content: comment.isDeleted ? "**komentar telah dihapus**" : comment.content,
-    //   })),
-    // };
-    const transformThreadDetails = await this.container.getInstance(TransformDetailThreadUseCase.name);
-    const transformedThreadDetails = await transformThreadDetails.execute(threadDetails);
+
     return {
       status: "success",
       data: {
-        thread: transformedThreadDetails,
+        thread: threadDetails,
       },
     };
   }
