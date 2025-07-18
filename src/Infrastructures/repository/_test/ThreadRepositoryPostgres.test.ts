@@ -124,7 +124,7 @@ describe("ThreadRepositoryPostgres", () => {
 
   describe("getDetailThread with comments", () => {
     it("should return detail thread with comments when thread and comments exist", async () => {
-      const fixDate = new Date("2025-07-15T16:17:55.537+07:00");
+      const fixDate = new Date("2025-07-15T09:17:55.537Z");
       // Arrange
       const expectedThread = {
         id: "thread-123",
