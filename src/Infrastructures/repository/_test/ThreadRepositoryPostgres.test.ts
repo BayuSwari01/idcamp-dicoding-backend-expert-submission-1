@@ -124,13 +124,13 @@ describe("ThreadRepositoryPostgres", () => {
 
   describe("getDetailThread with comments", () => {
     it("should return detail thread with comments when thread and comments exist", async () => {
-      const fixDate = new Date("2025-07-15T09:17:55.537Z");
+      const fixDate = new Date("2025-07-18T08:02:21.430Z");
       // Arrange
       const expectedThread = {
         id: "thread-123",
         title: "A Thread Test",
         body: "A Body Test",
-        date: "2025-07-15T16:17:55.537+07:00",
+        date: fixDate,
         username: "dicoding",
       };
 
@@ -150,7 +150,7 @@ describe("ThreadRepositoryPostgres", () => {
         title: "A Thread Test",
         body: "A Body Test",
         owner: "user-123",
-        date: fixDate,
+        date: fixDate.toISOString(),
       };
       await UsersTableTestHelper.addUser({});
       await ThreadsTableTestHelper.addThread(threadPayload);
