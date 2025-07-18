@@ -8,7 +8,7 @@ import { ClientError } from "../../Commons/exceptions/ClientError";
 import { authenticationsPlugin } from "../../Interfaces/http/api/authentications/index";
 import { threadsPlugin } from "../../Interfaces/http/api/threads/index";
 import { commentsPlugin } from "../../Interfaces/http/api/comments/index";
-import { testPlugin } from "../../Interfaces/http/api/test";
+import { halloPlugin } from "../../Interfaces/http/api/hallo/index";
 
 export const createServer = async (container: Container) => {
   const server = Hapi.server({
@@ -63,7 +63,7 @@ export const createServer = async (container: Container) => {
       },
     },
     {
-      plugin: testPlugin,
+      plugin: halloPlugin,
       options: {
         container,
       },
