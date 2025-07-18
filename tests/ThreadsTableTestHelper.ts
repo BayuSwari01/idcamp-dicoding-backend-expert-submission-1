@@ -2,7 +2,21 @@
 import { pool } from "../src/Infrastructures/database/postgres/pool";
 
 export const ThreadsTableTestHelper = {
-  async addThread({ id = "thread-123", title = "A Thread Test", body = "A Body Test", owner = "user-123", date = new Date() }) {
+  async addThread(
+    {
+      id = "thread-123",
+      title = "A Thread Test",
+      body = "A Body Test",
+      owner = "user-123",
+      date = new Date(),
+    }: {
+      id?: string;
+      title?: string;
+      body?: string;
+      owner?: string;
+      date?: Date | string;
+    } = {} as { id?: string; title?: string; body?: string; owner?: string; date?: Date }
+  ) {
     const query = {
       text: "INSERT INTO threads VALUES($1, $2, $3, $4, $5)",
       values: [id, title, body, owner, date],
