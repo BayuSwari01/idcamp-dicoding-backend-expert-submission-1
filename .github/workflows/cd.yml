@@ -19,7 +19,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ~/idcamp-dicoding-backend-expert-submission-1
-            git pull
+            GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa_dicoding" git pull
             npm install
             npm run migrate up
             npm run build
