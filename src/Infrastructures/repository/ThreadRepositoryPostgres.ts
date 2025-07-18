@@ -55,6 +55,7 @@ export class ThreadRepositoryPostgres {
       throw new NotFoundError("THREAD_NOT_FOUND");
     }
 
+    result.rows[0].date = new Date(result.rows[0].date);
     return result.rows[0];
   }
 }
